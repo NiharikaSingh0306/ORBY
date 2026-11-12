@@ -1,24 +1,96 @@
+
+# ==============================
+# NODE / REACT FRONTEND
+# ==============================
+
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# ==============================
+# PYTHON BACKEND
+# ==============================
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+backend/.venv/
+backend/venv/
+
+# Python tools
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ==============================
+# NASA DATASET
+# ==============================
+
+backend/data/
+*.npy
+*.npz
+
+# ==============================
+# TRAINED MODEL FILES
+# ==============================
+
+backend/models/
+*.pt
+*.pth
+*.pkl
+*.joblib
+
+# ==============================
+# IDE / EDITOR
+# ==============================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==============================
+# OPERATING SYSTEM
+# ==============================
+
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+desktop.ini
+```
+
+## 3. What should GitHub track vs ignore?
+
+| Files | GitHub |
+|---|---|
+| React source code | <badge color="success">Track</badge> |
+| Python source code | <badge color="success">Track</badge> |
+| `package.json` | <badge color="success">Track</badge> |
+| `package-lock.json` | <badge color="success">Track</badge> |
+| `pyproject.toml` | <badge color="success">Track</badge> |
+| `uv.lock` | <badge color="success">Track</badge> |
+| NASA `.npy` files | <badge color="danger">Ignore</badge> |
+| `node_modules` | <badge color="danger">Ignore</badge> |
+| Python virtual environment | <badge color="danger">Ignore</badge> |
+| `.env` secrets | <badge color="danger">Ignore</badge> |
+| Trained model weights | <badge color="danger">Ignore</badge> |
+
+
+
+
