@@ -24,7 +24,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
+import TelemetryMonitor from "./components/TelemetryMonitor";
 import "./index.css";
 
 const telemetryData = [
@@ -286,19 +286,27 @@ function App() {
               </div>
             </section>
           </>
+        ) : activePage === "Telemetry" ? (
+          <div id="monitor">
+            <TelemetryMonitor />
+          </div>
         ) : (
           <section className="placeholder-card">
             <div className="placeholder-icon">
-              {activePage === "Telemetry" ? (
-                <Radio size={27} />
-              ) : activePage === "Anomalies" ? (
+              {activePage === "Anomalies" ? (
                 <AlertTriangle size={27} />
               ) : (
                 <ChartNoAxesCombined size={27} />
               )}
             </div>
+
             <h2>{activePage}</h2>
-            <p>This module is coming soon. We'll connect it to the actual NASA telemetry dataset.</p>
+
+            <p>
+              This module is coming soon. We'll connect it to the
+              actual NASA telemetry dataset.
+            </p>
+
             <button
               className="back-button"
               onClick={() => setActivePage("Overview")}
@@ -316,5 +324,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

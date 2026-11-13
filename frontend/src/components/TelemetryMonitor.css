@@ -1,0 +1,192 @@
+.telemetry-section {
+    width: 100%;
+    margin: 40px auto;
+    color: #e2e8f0;
+}
+
+.telemetry-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    color: #60a5fa;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.telemetry-heading h2 {
+    font-size: 27px;
+    margin: 8px 0;
+}
+
+.telemetry-subtitle {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.live-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #4ade80;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    background: #4ade80;
+    border-radius: 50%;
+}
+
+.telemetry-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.telemetry-controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.telemetry-controls select {
+    min-width: 145px;
+    padding: 10px 14px;
+    color: #e2e8f0;
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 7px;
+    outline: none;
+}
+
+.telemetry-controls select:focus {
+    border-color: #60a5fa;
+}
+
+.telemetry-chart-card {
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.chart-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.chart-heading h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+}
+
+.chart-heading p {
+    margin: 0;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #64748b;
+}
+
+.anomaly-count {
+    color: #fca5a5;
+    background: #7f1d1d33;
+    border: 1px solid #7f1d1d;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.chart-container {
+    width: 100%;
+    height: 350px;
+}
+
+.chart-message {
+    text-align: center;
+    padding: 100px 0;
+    color: #94a3b8;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.chart-legend span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.chart-legend i {
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.legend-blue {
+    background: #60a5fa;
+}
+
+.legend-red {
+    background: #ef4444;
+}
+
+.telemetry-footer {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 14px;
+}
+
+.telemetry-error {
+    color: #fca5a5;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+    .telemetry-heading {
+        align-items: flex-start;
+    }
+
+    .telemetry-controls {
+        gap: 10px;
+    }
+
+    .telemetry-controls label {
+        flex: 1;
+        min-width: 110px;
+    }
+
+    .telemetry-controls select {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .chart-container {
+        height: 260px;
+    }
+
+    .telemetry-chart-card {
+        padding: 12px;
+    }
+}
