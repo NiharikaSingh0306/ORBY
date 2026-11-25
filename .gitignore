@@ -81,3 +81,6 @@ backend/models/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Personal reference notes
+links.txt
