@@ -1,13 +1,11 @@
 import torch
 import torch.nn as nn
 
-
 class ChannelProjection(nn.Module):
     """
     Converts one channel's input features into a common
     latent representation.
     """
-
     def __init__(self, input_features):
         super().__init__()
 
@@ -19,7 +17,6 @@ class ChannelProjection(nn.Module):
     def forward(self, x):
         return self.projection(x)
 
-
 class ORBYModel(nn.Module):
     """
     Hybrid anomaly detection model:
@@ -28,7 +25,6 @@ class ORBYModel(nn.Module):
     - Shared LSTM
     - Shared next-step prediction head
     """
-
     def __init__(self, channel_dimensions):
         super().__init__()
 
