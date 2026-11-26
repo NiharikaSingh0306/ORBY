@@ -124,6 +124,7 @@ def main():
 
     labels_by_channel = load_labels()
     results = []
+    test_errors_by_channel={}
 
     total_tp = 0
     total_fp = 0
@@ -156,6 +157,8 @@ def main():
             channel,
             test_processed,
         )
+
+        test_errors_by_channel[channel]=errors
         threshold = thresholds[channel]["threshold"]
         predictions = (errors > threshold).astype(np.int32)
 
@@ -201,7 +204,14 @@ def main():
             f"F1={metrics['f1']:.4f} | "
             f"FPR={metrics['fpr']:.4f}"
         )
+    test_errors_path = OUTPUT_PATH.parent / "orby_test_errors.npz"
 
+    np.savez_compressed(
+        test_errors_path,
+        **test_errors_by_channel,
+    )
+
+    print("Test errors saved:", test_errors_path)
     overall = calculate_metrics(
         np.array(
             [1] * (total_tp + total_fn)

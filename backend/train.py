@@ -20,7 +20,14 @@ from preprocessing import (
 )
 
 from model import ORBYModel
-
+SELECTED_CHANNELS = [
+    "D-1",
+    "D-2",
+    "D-3",
+    "D-4",
+    "D-7",
+    "D-9",
+]
 # Reproducibility
 SEED = 42
 
@@ -67,16 +74,14 @@ def prepare_channel_data(channel):
     return train_data, val_data, params
 
 
+
 def prepare_all_channels():
     channel_data = {}
     channel_dimensions = {}
 
-    channel_files = sorted(TRAIN_DIR.glob("*.npy"))
+    print(f"\nPreparing {len(SELECTED_CHANNELS)} selected channels...")
 
-    print(f"\nPreparing {len(channel_files)} channels...")
-
-    for index, file_path in enumerate(channel_files, start=1):
-        channel = file_path.stem
+    for index, channel in enumerate(SELECTED_CHANNELS, start=1):
 
         try:
             train_data, val_data, params = prepare_channel_data(channel)
@@ -93,9 +98,12 @@ def prepare_all_channels():
         channel_dimensions[channel] = params["input_features"]
 
         print(
-            f"[{index}/{len(channel_files)}] "
+            f"[{index}/{len(SELECTED_CHANNELS)}] "
             f"{channel}: {params['input_features']} features"
         )
+
+    if not channel_data:
+        raise ValueError("No selected channels could be prepared.")
 
     return channel_data, channel_dimensions
 
