@@ -40,62 +40,59 @@ def load_channel(channel):
     return train, test
 
 
+
 def preprocess_channel(train, test, fit_data=None):
     """
-    Fit preprocessing parameters on fit_data only.
-    Apply the fitted transformations to train and test.
+    Fit preprocessing parameters on training data only.
+    Normalize all retained features and remove constant
+    command features.
     """
 
     if fit_data is None:
         fit_data = train
 
-    train_telemetry = train[:, 0:1]
-    test_telemetry = test[:, 0:1]
-
-    train_commands = train[:, 1:]
-    test_commands = test[:, 1:]
-
+    # Identify variable command features using training data only
     fit_commands = fit_data[:, 1:]
-
-    # Identify variable command features using fitting data only
     command_std = np.std(fit_commands, axis=0)
-    variable_mask = command_std > 0
+    variable_mask = command_std > 1e-8
 
-    train_commands = train_commands[:, variable_mask]
-    test_commands = test_commands[:, variable_mask]
+    # Keep telemetry and variable command features
+    feature_mask = np.concatenate([
+        np.array([True]),
+        variable_mask
+    ])
 
-    # Calculate telemetry normalization parameters using fitting data only
-    telemetry_mean = np.mean(fit_data[:, 0:1])
-    telemetry_std = np.std(fit_data[:, 0:1])
+    train_filtered = train[:, feature_mask]
+    test_filtered = test[:, feature_mask]
+    fit_filtered = fit_data[:, feature_mask]
 
-    if telemetry_std < 1e-8:
-        telemetry_std = 1.0
+    # Calculate normalization parameters using training data only
+    feature_mean = np.mean(fit_filtered, axis=0)
+    feature_std = np.std(fit_filtered, axis=0)
 
-    train_telemetry = (
-        train_telemetry - telemetry_mean
-    ) / telemetry_std
+    # Avoid division by zero
+    feature_std = np.where(feature_std < 1e-8, 1.0, feature_std)
 
-    test_telemetry = (
-        test_telemetry - telemetry_mean
-    ) / telemetry_std
+    train_processed = (
+        train_filtered - feature_mean
+    ) / feature_std
 
-    train_processed = np.concatenate(
-        [train_telemetry, train_commands], axis=1
-    )
-
-    test_processed = np.concatenate(
-        [test_telemetry, test_commands], axis=1
-    )
+    test_processed = (
+        test_filtered - feature_mean
+    ) / feature_std
 
     preprocessing_params = {
-        "telemetry_mean": float(telemetry_mean),
-        "telemetry_std": float(telemetry_std),
+        "feature_mean": feature_mean.tolist(),
+        "feature_std": feature_std.tolist(),
         "variable_command_mask": variable_mask.tolist(),
         "input_features": int(train_processed.shape[1])
     }
 
-    return train_processed, test_processed, preprocessing_params
-
+    return (
+        train_processed.astype(np.float32),
+        test_processed.astype(np.float32),
+        preprocessing_params
+    )
 
 def create_sliding_windows(data, window_size=WINDOW_SIZE):
     """

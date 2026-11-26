@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import numpy as np
 import torch
-
+from train import VALIDATION_RATIO
 from model import ORBYModel
 from preprocessing import (
     WINDOW_SIZE,
@@ -56,34 +56,44 @@ def reconstruct_model():
 
     return model, channel_dimensions
 
+
 def predict_errors(model, channel, test_data):
-    """Predict next-step telemetry values and calculate errors."""
+    """Predict all next-step telemetry features and calculate anomaly scores."""
     total_windows = len(test_data) - WINDOW_SIZE
 
     if total_windows <= 0:
         raise ValueError(
             f"{channel}: Not enough test observations."
         )
+
     errors = []
 
     with torch.no_grad():
         for start in range(0, total_windows, BATCH_SIZE):
             end = min(start + BATCH_SIZE, total_windows)
+
             windows = np.stack([
                 test_data[i:i + WINDOW_SIZE]
                 for i in range(start, end)
             ])
 
+            # Targets contain all features
             targets = test_data[
-                start + WINDOW_SIZE:end + WINDOW_SIZE, 0
+                start + WINDOW_SIZE:end + WINDOW_SIZE
             ]
+
             x = torch.tensor(
                 windows,
                 dtype=torch.float32,
                 device=DEVICE,
             )
+
             predictions = model(x, channel).cpu().numpy()
-            batch_errors = np.abs(predictions - targets)
+
+           # Use telemetry feature (feature index 0)
+            batch_errors = np.abs(
+                predictions[:, 0] - targets[:, 0]
+            )
             errors.extend(batch_errors.tolist())
 
     return np.asarray(errors, dtype=np.float32)
@@ -136,8 +146,9 @@ def main():
 
     for channel in sorted(channel_dimensions):
         train_data, test_data = load_channel(channel)
-
-        split_index = int(len(train_data) * 0.8)
+        split_index = int(
+            len(train_data) * (1 - VALIDATION_RATIO)
+        )
         fit_data = train_data[:split_index]
 
         train_processed, test_processed, params = (

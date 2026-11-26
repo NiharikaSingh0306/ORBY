@@ -43,20 +43,19 @@ def load_trained_model():
     return model, channel_dimensions
 
 
+
 def calculate_errors(model, data, channel):
     total_windows = len(data) - WINDOW_SIZE
 
     if total_windows <= 0:
         raise ValueError(
-            f"Not enough validation samples for {channel}"
+            f"Not enough data for channel {channel}"
         )
 
     errors = []
 
     with torch.no_grad():
-
         for start in range(0, total_windows, BATCH_SIZE):
-
             indices = np.arange(
                 start,
                 min(start + BATCH_SIZE, total_windows)
@@ -67,18 +66,17 @@ def calculate_errors(model, data, channel):
                 for i in indices
             ])
 
-            y_batch = data[
-                indices + WINDOW_SIZE, 0
-            ]
+            # Predict all features at the next timestep
+            y_batch = data[indices + WINDOW_SIZE]
 
-            X_tensor = torch.from_numpy(
-                X_batch
-            ).float().to(DEVICE)
+            X_tensor = torch.from_numpy(X_batch).float().to(DEVICE)
 
             predictions = model(X_tensor, channel)
 
+            # Mean absolute error across all features
+            # Use telemetry feature (feature index 0)
             batch_errors = np.abs(
-                predictions.cpu().numpy() - y_batch
+                predictions.cpu().numpy()[:, 0] - y_batch[:, 0]
             )
 
             errors.extend(batch_errors.tolist())
@@ -128,7 +126,7 @@ def main():
 
         median = np.median(errors)
         mad = np.median(np.abs(errors - median))
-
+       
         print(
             f"[{index}/{len(channel_dimensions)}] "
             f"{channel}: "

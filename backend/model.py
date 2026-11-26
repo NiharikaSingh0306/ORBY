@@ -58,10 +58,13 @@ class ORBYModel(nn.Module):
         )
 
         # Predict the next telemetry value
-        self.prediction_head = nn.Linear(
-            LSTM_HIDDEN_SIZE,
-            1
-        )
+        self.prediction_heads = nn.ModuleDict({
+            channel: nn.Linear(
+                LSTM_HIDDEN_SIZE,
+                input_features
+            )
+            for channel, input_features in channel_dimensions.items()
+        })
 
     def forward(self, x, channel):
         """
@@ -103,7 +106,7 @@ class ORBYModel(nn.Module):
         # Use the final time step for prediction
         final_output = lstm_output[:, -1, :]
 
-        prediction = self.prediction_head(final_output)
+        prediction = self.prediction_heads[channel](final_output)
 
         return prediction.squeeze(-1)
 

@@ -26,7 +26,6 @@ SELECTED_CHANNELS = [
     "D-3",
     "D-4",
     "D-7",
-    "D-9",
 ]
 # Reproducibility
 SEED = 42
@@ -164,7 +163,7 @@ def create_time_series_batches(
             for i in batch_indices
         ])
 
-        y_batch = data[batch_indices + window_size, 0]
+        y_batch = data[batch_indices + window_size]
 
         yield (
             torch.from_numpy(X_batch).float(),
