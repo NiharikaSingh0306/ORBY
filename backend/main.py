@@ -5,6 +5,7 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException,Query
 from fastapi.middleware.cors import CORSMiddleware
 import re
+from inference import predict_channel
 
 #configurations
 base_dir=Path(__file__).resolve().parent
@@ -12,6 +13,7 @@ data_dir=base_dir/"data"
 train_dir=data_dir/"train"
 test_dir=data_dir/"test"
 labels_file=data_dir/"labeled_anomalies.csv"
+evaluation_file = base_dir / "models" / "orby_evaluation_results.csv"
 
 app=FastAPI(
     title="ORBY_API",
@@ -177,6 +179,71 @@ def get_telemetry(
             detail=f"could not process channel data: {error}"
         )
 
+# ML anomaly prediction
+@app.get("/predict/{spacecraft}/{channel}")
+def get_predictions(spacecraft: str, channel: str):
+
+    spacecraft = spacecraft.upper()
+    channel = channel.upper()
+
+    if spacecraft not in ["SMAP", "MSL"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid spacecraft."
+        )
+
+    labels = load_labels()
+
+    channel_label = labels[
+        (labels["chan_id"] == channel) &
+        (labels["spacecraft"].str.upper() == spacecraft)
+    ]
+
+    if channel_label.empty:
+        raise HTTPException(
+            status_code=404,
+            detail="Channel not found for selected spacecraft."
+        )
+
+    try:
+        return predict_channel(channel)
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        )
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Prediction failed: {str(error)}"
+        )
+
+# Model evaluation results
+@app.get("/evaluation")
+def get_evaluation():
+    if not evaluation_file.exists():
+        raise HTTPException(
+            status_code=500,
+            detail="Model evaluation results file not found."
+        )
+
+    try:
+        results = pd.read_csv(evaluation_file)
+
+        # Convert NaN values to JSON-compatible None
+        results = results.replace({np.nan: None})
+
+        return {
+            "evaluation": results.to_dict(orient="records")
+        }
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Could not load evaluation results: {str(error)}"
+        )
 
 
 

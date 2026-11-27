@@ -14,7 +14,6 @@ import {
   ArrowUpRight,
   CircleDot,
 } from "lucide-react";
-
 import {
   AreaChart,
   Area,
@@ -25,6 +24,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import TelemetryMonitor from "./components/TelemetryMonitor";
+import AnomaliesMonitor from "./components/AnomaliesMonitor";
+import PerformanceMonitor from "./components/PerformanceMonitor";
 import "./index.css";
 
 const telemetryData = [
@@ -290,30 +291,16 @@ function App() {
           <div id="monitor">
             <TelemetryMonitor />
           </div>
+        ) : activePage === "Anomalies" ? (
+          <div id="anomalies">
+            <AnomaliesMonitor />
+          </div>
+        ) : activePage === "Performance" ? (
+          <div id="performance">
+            <PerformanceMonitor />
+          </div>
         ) : (
-          <section className="placeholder-card">
-            <div className="placeholder-icon">
-              {activePage === "Anomalies" ? (
-                <AlertTriangle size={27} />
-              ) : (
-                <ChartNoAxesCombined size={27} />
-              )}
-            </div>
-
-            <h2>{activePage}</h2>
-
-            <p>
-              This module is coming soon. We'll connect it to the
-              actual NASA telemetry dataset.
-            </p>
-
-            <button
-              className="back-button"
-              onClick={() => setActivePage("Overview")}
-            >
-              Back to overview <ArrowUpRight size={15} />
-            </button>
-          </section>
+          <div>Page not found</div>
         )}
 
         <footer>

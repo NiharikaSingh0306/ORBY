@@ -1,7 +1,7 @@
 .telemetry-section {
     width: 100%;
-    margin: 40px auto;
-    color: #e2e8f0;
+    margin: 24px auto;
+    color: #e4eee8;
 }
 
 .telemetry-heading {
@@ -9,76 +9,84 @@
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
 }
 
-.eyebrow {
-    color: #60a5fa;
-    font-size: 11px;
-    letter-spacing: 2px;
+.telemetry-heading .eyebrow {
+    color: #39d98a;
+    font-size: 10px;
+    letter-spacing: 1.8px;
     font-weight: 700;
 }
 
 .telemetry-heading h2 {
-    font-size: 27px;
-    margin: 8px 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 25px;
+    margin: 7px 0;
 }
 
 .telemetry-subtitle {
-    color: #94a3b8;
-    font-size: 13px;
+    color: #899b90;
+    font-size: 12px;
 }
 
 .live-status {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 1px;
-    color: #4ade80;
+    color: #39d98a;
 }
 
-.status-dot {
+.live-status .status-dot {
     width: 7px;
     height: 7px;
-    background: #4ade80;
+    background: #39d98a;
     border-radius: 50%;
+    box-shadow: 0 0 8px #39d98a66;
 }
 
 .telemetry-controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 22px;
+    gap: 14px;
+    margin-bottom: 18px;
 }
 
 .telemetry-controls label {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    color: #94a3b8;
-    font-size: 12px;
+    gap: 7px;
+    color: #899b90;
+    font-size: 11px;
 }
 
 .telemetry-controls select {
     min-width: 145px;
-    padding: 10px 14px;
-    color: #e2e8f0;
-    background: #111827;
-    border: 1px solid #334155;
+    padding: 10px 13px;
+    color: #e4eee8;
+    background: #101a15;
+    border: 1px solid #24372c;
     border-radius: 7px;
     outline: none;
+    transition: border-color 0.2s ease;
 }
 
 .telemetry-controls select:focus {
-    border-color: #60a5fa;
+    border-color: #39d98a;
+}
+
+.telemetry-controls select option {
+    background: #101a15;
+    color: #e4eee8;
 }
 
 .telemetry-chart-card {
-    background: #111827;
-    border: 1px solid #263244;
-    border-radius: 12px;
-    padding: 20px;
+    background: #101a15;
+    border: 1px solid #24372c;
+    border-radius: 9px;
+    padding: 19px 20px;
 }
 
 .chart-heading {
@@ -86,28 +94,30 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .chart-heading h3 {
-    margin: 0 0 6px;
-    font-size: 17px;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0 0 5px;
+    font-size: 16px;
 }
 
 .chart-heading p {
     margin: 0;
     font-size: 10px;
     letter-spacing: 1px;
-    color: #64748b;
+    color: #75877c;
 }
 
 .anomaly-count {
     color: #fca5a5;
-    background: #7f1d1d33;
-    border: 1px solid #7f1d1d;
+    background: #382124;
+    border: 1px solid #66343a;
     padding: 7px 10px;
-    border-radius: 20px;
+    border-radius: 6px;
     font-size: 11px;
+    white-space: nowrap;
 }
 
 .chart-container {
@@ -118,15 +128,15 @@
 .chart-message {
     text-align: center;
     padding: 100px 0;
-    color: #94a3b8;
+    color: #899b90;
 }
 
 .chart-legend {
     display: flex;
     gap: 22px;
     flex-wrap: wrap;
-    margin-top: 18px;
-    color: #94a3b8;
+    margin-top: 16px;
+    color: #a0b0a5;
     font-size: 11px;
 }
 
@@ -144,28 +154,29 @@
 }
 
 .legend-blue {
-    background: #60a5fa;
+    background: #39d98a;
 }
 
 .legend-red {
-    background: #ef4444;
+    background: #ef6464;
 }
 
 .telemetry-footer {
-    color: #64748b;
-    font-size: 11px;
-    margin-top: 14px;
+    color: #75877c;
+    font-size: 10px;
+    margin-top: 12px;
 }
 
 .telemetry-error {
     color: #fca5a5;
-    font-size: 13px;
-    margin-bottom: 15px;
+    font-size: 12px;
+    margin-bottom: 14px;
 }
 
 @media (max-width: 600px) {
     .telemetry-heading {
         align-items: flex-start;
+        flex-direction: column;
     }
 
     .telemetry-controls {
@@ -187,6 +198,6 @@
     }
 
     .telemetry-chart-card {
-        padding: 12px;
+        padding: 13px;
     }
 }
